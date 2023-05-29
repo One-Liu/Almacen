@@ -2,8 +2,7 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        //Almacen almacen = new Almacen(0,0,true,5000,5,1000);
-        Almacen almacen = new Almacen(0,0,true,50,5,30);
+        Almacen almacen = new Almacen(0,0,true,5000,5,1000);
         Productor productor1 = new Productor("Productor1", almacen);
         Productor productor2 = new Productor("Productor2", almacen);
         Consumidor consumidor1 = new Consumidor("Consumidor1", almacen);

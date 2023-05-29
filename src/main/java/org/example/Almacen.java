@@ -8,10 +8,10 @@ public class Almacen {
     private int minimoTrigo;
     private int maximoTrigo;
 
-    public Almacen(int kilosTrigoExistentes, int operacionesDia, boolean estatus, int maximoOperaciones, int minimoTrigo, int maximoTrigo) {
+    public Almacen(int kilosTrigoExistentes, int operacionesDia, boolean abierto, int maximoOperaciones, int minimoTrigo, int maximoTrigo) {
         this.kilosTrigoExistentes = kilosTrigoExistentes;
         this.operacionesDia = operacionesDia;
-        this.abierto = estatus;
+        this.abierto = abierto;
         this.maximoOperaciones = maximoOperaciones;
         this.minimoTrigo = minimoTrigo;
         this.maximoTrigo = maximoTrigo;
@@ -27,11 +27,12 @@ public class Almacen {
             notifyAll();
         }
     }
-    //TODO notificar de que puede seguir produciendo
+
     public synchronized void producirKilosTrigo(int kilosTrigoAgregados) throws InterruptedException {
         if((getKilosTrigoExistentes() + kilosTrigoAgregados) > getMaximoTrigo()) {
             wait();
         } else {
+            notify();
             this.kilosTrigoExistentes += kilosTrigoAgregados;
             agregarOperacion();
             validarNumeroOperaciones();
@@ -42,6 +43,7 @@ public class Almacen {
         if(getKilosTrigoExistentes() <= getMinimoTrigo()) {
             wait();
         } else {
+            notify();
             this.kilosTrigoExistentes -= kilosTrigoVendidos;
             agregarOperacion();
             validarNumeroOperaciones();
@@ -68,23 +70,11 @@ public class Almacen {
         return maximoOperaciones;
     }
 
-    public synchronized void setMaximoOperaciones(int maximoOperaciones) {
-        this.maximoOperaciones = maximoOperaciones;
-    }
-
     public synchronized int getMinimoTrigo() {
         return minimoTrigo;
     }
 
-    public synchronized void setMinimoTrigo(int minimoTrigo) {
-        this.minimoTrigo = minimoTrigo;
-    }
-
     public synchronized int getMaximoTrigo() {
         return maximoTrigo;
-    }
-
-    public synchronized void setMaximoTrigo(int maximoTrigo) {
-        this.maximoTrigo = maximoTrigo;
     }
 }
